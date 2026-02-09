@@ -112,6 +112,23 @@ const initializeDatabase = () => {
       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
     );
 
+    -- Withdrawals table (for tracking user withdrawals)
+    CREATE TABLE IF NOT EXISTS withdrawals (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER NOT NULL,
+      to_address TEXT NOT NULL,
+      kes_amount REAL NOT NULL,
+      usdt_amount REAL NOT NULL,
+      exchange_rate REAL NOT NULL,
+      status TEXT DEFAULT 'pending' CHECK(status IN ('pending', 'completed', 'failed')),
+      tx_hash TEXT UNIQUE,
+      failure_reason TEXT,
+      created_at TEXT DEFAULT (datetime('now')),
+      completed_at TEXT,
+      failed_at TEXT,
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    );
+
     -- Create indexes
     CREATE INDEX IF NOT EXISTS idx_users_phone ON users(phone);
     CREATE INDEX IF NOT EXISTS idx_users_username ON users(username);

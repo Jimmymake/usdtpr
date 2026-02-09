@@ -109,6 +109,37 @@ const schemas = {
       .valid('deposit', 'withdrawal', 'bet', 'win', 'bonus', 'refund')
       .optional(),
   }),
+
+  // Withdrawal request
+  withdrawal: Joi.object({
+    address: Joi.string()
+      .pattern(/^T[1-9A-HJ-NP-Za-km-z]{33}$/)
+      .required()
+      .messages({
+        'string.pattern.base': 'Invalid Tron address format. Must start with T and be 34 characters.',
+        'any.required': 'Withdrawal address is required',
+      }),
+    amount: Joi.number()
+      .positive()
+      .required()
+      .messages({
+        'number.positive': 'Amount must be positive',
+        'any.required': 'Amount is required',
+      }),
+  }),
+
+  // Withdrawal history query
+  withdrawalHistory: Joi.object({
+    page: Joi.number()
+      .integer()
+      .min(1)
+      .default(1),
+    limit: Joi.number()
+      .integer()
+      .min(1)
+      .max(100)
+      .default(20),
+  }),
 };
 
 module.exports = {

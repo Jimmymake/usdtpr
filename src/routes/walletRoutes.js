@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const walletController = require('../controllers/walletController');
+const withdrawalController = require('../controllers/withdrawalController');
 const { authenticate } = require('../middleware/auth');
 const { validate, schemas } = require('../middleware/validate');
 
@@ -15,6 +16,11 @@ router.get('/transactions', validate(schemas.transactionHistory, 'query'), walle
 
 // Get exchange rate (public info but keeping it under wallet)
 router.get('/exchange-rate', walletController.getExchangeRate);
+
+// Withdrawal routes
+router.post('/withdraw', validate(schemas.withdrawal), withdrawalController.requestWithdrawal);
+router.get('/withdrawals', validate(schemas.withdrawalHistory, 'query'), withdrawalController.getWithdrawalHistory);
+router.get('/withdrawal-info', withdrawalController.getWithdrawalInfo);
 
 module.exports = router;
 
