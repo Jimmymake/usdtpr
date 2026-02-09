@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
+    "build": "echo 'No build step required - Node.js project runs directly' && node -c server.js",
     "verify-address": "node scripts/verify-address.js",
     "testnet": "node scripts/testnet-setup.js",
     "check-balance": "node scripts/check-deposit-balance.js",
